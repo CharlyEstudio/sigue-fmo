@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  wsUrl: 'https://ferremayoristas.com.mx:3001',
+  mapbox: {
+    accessToken: 'pk.eyJ1IjoiY2hhcmx5cmRldiIsImEiOiJjazFsNjZtazQwMmJ6M2NzOXZqbjFqNmdlIn0.PldSM0-VaymJjR1noY2tiw'
+  }
 };
 
 /*

@@ -1,0 +1,28 @@
+<div class="row vh-100" style="margin: 0px!important; padding: 0px!important;">
+
+    <div class="col-md-9 col-lg-10" style="padding: 0px!important;">
+
+        <div class="map" id="map" class="match-parent"></div>
+
+    </div>
+
+    <div class="col-md-3 col-lg-2 bg-maps" id="mensajes-sockets">
+
+        <li class="list-group-item text-white mt-1" *ngFor="let msg of comentarios">
+
+            {{msg.asesor.nombre}}
+            <br>
+            #{{msg.respuesta.numero}}
+            <br>
+            {{msg.respuesta.hora}}
+            <br>
+            {{msg.respuesta.accion}}
+            <br>
+            {{(msg.respuesta.comentario !== '' && msg.respuesta.comentario !== '.') ? msg.respuesta.comentario : 'Sin comentarios'}}
+            <br>
+
+        </li>
+
+    </div>
+
+</div>
