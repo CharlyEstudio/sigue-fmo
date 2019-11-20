@@ -141,13 +141,13 @@ export class MapComponent implements OnInit {
       center: [this.lng, this.lat]
     });
     // Add map controls
-    this.map.addControl(new mapboxgl.NavigationControl());
+    // this.map.addControl(new mapboxgl.NavigationControl());
     this.cargarMapas();
 
     // Sockets
     this.elemento = document.getElementById('mensajes-sockets');
     this.socketService.escuchar('comentario-asesor').subscribe((comentario: any) => {
-      if (comentario.status) {
+      if (comentario.estatus) {
         const asesor = Number(comentario.asesor.idFerrum);
         this.comentarios.push(comentario);
         setTimeout(() => {
@@ -1768,7 +1768,6 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase841);
-          console.log(cli);
           cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';

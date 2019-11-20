@@ -28,7 +28,7 @@ export class SocketsService {
     });
   }
 
-  acciones( evento: string, payload?: any, callback?: Function ) {
+  acciones( evento: string, payload?: any, callback?: () => {} ) {
     this.socket.emit(evento, payload, callback);
   }
 

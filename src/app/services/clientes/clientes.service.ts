@@ -11,7 +11,7 @@ export class ClientesService {
   ) { }
 
   obtenerClientesvsVisita(perid: any, dia: any, fecha: any) {
-    const url = `https://ferremayoristas.com.mx:4111/clientes/dia/${perid}/${dia}/${fecha}`;
+    const url = `https://ferremayoristas.com.mx:3001/clientes/dia/${perid}/${dia}/${fecha}`;
 
     return this.http.get(url);
   }
