@@ -6,22 +6,34 @@
 
     </div>
 
-    <div class="bg-maps" id="mensajes-sockets">
+    <div class="d-flex justify-content-between" id="mensajes-sockets">
 
-        <li class="list-group-item text-white mt-1" *ngFor="let msg of comentarios">
+        <div class="p-2 bd-highlight bg-maps">
 
-            {{msg.asesor.nombre}}
-            <br>
-            #{{msg.respuesta.numero}}
-            <br>
-            {{msg.respuesta.hora}}
-            <br>
-            {{msg.respuesta.accion}}
-            <br>
-            {{(msg.respuesta.comentario !== '' && msg.respuesta.comentario !== '.') ? msg.respuesta.comentario : 'Sin comentarios'}}
-            <br>
+            <li class="list-group-item text-white text-left" style="padding: 5px 1.25rem!important; font-size: 12px;" *ngFor="let ase of asesores; let indice = i">
 
-        </li>
+                <img [src]="'https://ferremayoristas.com.mx/sigue/assets/iconos/' + ase.PERID + '.png'" style="border: 2px solid white; border-radius: 50%;"> {{ase.NOMBRE}}
+    
+            </li>
+
+        </div>
+
+        <div class="p-2 bd-highlight bg-maps">
+
+            <li class="list-group-item text-white mt-1" *ngFor="let msg of comentarios">
+
+                {{msg.asesor.nombre}}
+                <br>
+                #{{msg.respuesta.numero}}
+                <br>
+                {{msg.respuesta.hora}} {{msg.respuesta.accion}}
+                <br>
+                {{(msg.respuesta.comentario !== '' && msg.respuesta.comentario !== '.') ? msg.respuesta.comentario : 'Sin comentarios'}}
+                <br>
+    
+            </li>
+
+        </div>
 
     </div>
 

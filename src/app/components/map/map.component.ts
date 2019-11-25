@@ -18,7 +18,9 @@ export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
   marker: mapboxgl.Marker;
-  style = 'mapbox://styles/mapbox/dark-v10';
+  // style = 'mapbox://styles/mapbox/navigation-guidance-night-v2';
+  // style = 'mapbox://styles/mapbox/dark-v10';
+  style = 'mapbox://styles/charlyrdev/ck3eogfcg52o31ckkv2s2orv6/draft';
   lat = 20.556737;
   lng = -100.392379;
 
@@ -122,6 +124,7 @@ export class MapComponent implements OnInit {
   };
 
   // Panel de Seguimiento
+  asesores: any[] = [];
   comentarios: any[] = [];
   elemento: HTMLElement;
 
@@ -142,6 +145,15 @@ export class MapComponent implements OnInit {
     });
     // Add map controls
     // this.map.addControl(new mapboxgl.NavigationControl());
+
+    // Cargar Asesores
+    this.clientesService.obtenerAsesores().subscribe((ase: any) => {
+      if (ase.length > 0) {
+        this.asesores = ase;
+      }
+    });
+
+    // Cargar Mapa
     this.cargarMapas();
 
     // Sockets
@@ -216,6 +228,11 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // obtenerImagen(id: any) {
+  //   const icono = `https://ferremayoristas.com.mx/sigue/assets/iconos/${id}.png`;
+  //   return icono;
+  // }
+
   cargarMapas() {
     this.cargarMapa2();
     this.cargarMapa3();
@@ -269,15 +286,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase2}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase2}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase2);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -288,7 +309,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase2);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -297,10 +318,10 @@ export class MapComponent implements OnInit {
             bearing: 0,
             speed: 3,
             curve: 1,
-            easing: function(t) { return t; }
+            easing: (t: any) => t
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -349,15 +370,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase3}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase3}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase3);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -368,7 +393,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase3);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -380,7 +405,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -429,15 +454,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase4}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase4}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase4);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -448,7 +477,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase4);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -460,7 +489,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -509,15 +538,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase5}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase5}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase5);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -528,7 +561,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase5);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -540,7 +573,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -589,15 +622,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase6}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase6}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase6);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -608,7 +645,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase6);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -620,7 +657,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -669,15 +706,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase7}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase7}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase7);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -688,7 +729,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase7);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -700,7 +741,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -749,15 +790,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase8}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase8}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase8);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -768,7 +813,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase8);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -780,7 +825,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -829,15 +874,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase9}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase9}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase9);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -848,7 +897,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase9);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -860,7 +909,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -909,15 +958,19 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase10}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase10}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase10);
+
+            el.addEventListener('click', () => {
+              console.log(mark.properties);
+            });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
           }
@@ -928,7 +981,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase10);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -940,7 +993,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -989,18 +1042,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase11}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase11}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase11);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1012,7 +1065,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase11);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1024,7 +1077,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1073,18 +1126,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase12}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase12}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase12);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1096,7 +1149,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase12);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1108,7 +1161,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1157,18 +1210,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase13}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase13}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase13);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1180,7 +1233,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase13);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1192,7 +1245,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1241,18 +1294,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase15}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase15}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase15);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1264,7 +1317,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase15);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1276,7 +1329,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1325,18 +1378,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase19}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase19}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase19);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1348,7 +1401,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase19);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1360,7 +1413,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1409,18 +1462,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase112}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase112}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase112);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1432,7 +1485,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase112);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1444,7 +1497,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1493,18 +1546,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase157}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase157}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase157);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1516,7 +1569,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase157);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1528,7 +1581,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1577,18 +1630,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase211}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase211}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase211);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1600,7 +1653,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase211);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1612,7 +1665,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1661,18 +1714,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase241}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase241}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase241);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1684,7 +1737,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase241);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1696,7 +1749,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({
@@ -1745,18 +1798,18 @@ export class MapComponent implements OnInit {
             const el = document.createElement('div');
             el.className = 'marker';
             if (mark.properties.visita === 'NOT') {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/${this.ase841}.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/${this.ase841}.png)`;
               el.style.width = '15px';
               el.style.height = '15px';
             } else {
-              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+              el.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
               el.style.width = '25px';
               el.style.height = '25px';
             }
             el.setAttribute('id', mark.properties.numero + this.ase841);
 
             el.addEventListener('click', () => {
-              console.log(mark.properties.description);
+              console.log(mark.properties);
             });
 
             new mapboxgl.Marker(el).setLngLat(mark.geometry.coordinates).addTo(this.map);
@@ -1768,7 +1821,7 @@ export class MapComponent implements OnInit {
         if (info.respuesta.numero === mark.properties.numero) {
           this.map.setZoom(8);
           const cli = document.getElementById(info.respuesta.numero + this.ase841);
-          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer2.png)`;
+          cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer2.png)`;
           cli.style.width = '25px';
           cli.style.height = '25px';
           this.map.flyTo({
@@ -1780,7 +1833,7 @@ export class MapComponent implements OnInit {
             easing: function(t) { return t; }
           });
           setTimeout(() => {
-            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/tvmaps/assets/images/asesores/customer3.png)`;
+            cli.style.backgroundImage = `url(https://ferremayoristas.com.mx/sigue/assets/iconos/customer3.png)`;
             cli.style.width = '25px';
             cli.style.height = '25px';
             this.map.flyTo({

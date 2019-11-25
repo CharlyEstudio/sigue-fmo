@@ -15,4 +15,10 @@ export class ClientesService {
 
     return this.http.get(url);
   }
+
+  obtenerAsesores() {
+    const url = `https://ferremayoristas.com.mx/api/diarios.php?opcion=0`;
+
+    return this.http.get(url);
+  }
 }
